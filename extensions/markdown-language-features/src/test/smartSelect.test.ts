@@ -364,6 +364,44 @@ suite.only('markdown.SmartSelect', () => {
 
 		assertNestedRangesEqual(ranges![0], [8, 12], [7, 17], [1, 17], [0, 17]);
 	});
+	test('Smart select without multiple ranges', async () => {
+		const ranges = await getSelectionRangesForDocument(
+			joinLines(
+				`# main header 1`,
+				``,
+				``,
+				`- ${CURSOR}paragraph`,
+				`- content`));
+
+		assertNestedRangesEqual(ranges![0], [3, 3], [3, 4], [1, 4], [0, 4]);
+	});
+	test('Smart select on second level of a list', async () => {
+		const ranges = await getSelectionRangesForDocument(
+			joinLines(
+				`* level 0`,
+				`	* level 1`,
+				`	* level 1`,
+				`		* level 2`,
+				`	* level 1`,
+				`	* level ${CURSOR}1`,
+				`* level 0`));
+
+		assertNestedRangesEqual(ranges![0], [5, 5], [0, 5], [0, 6]);
+	});
+	test('Smart select on third level of a list', async () => {
+		const ranges = await getSelectionRangesForDocument(
+			joinLines(
+				`* level 0`,
+				`	* level 1`,
+				`	* level 1`,
+				`		* level ${CURSOR}2`,
+				`		* level 2`,
+				`	* level 1`,
+				`	* level 1`,
+				`* level 0`));
+
+		assertNestedRangesEqual(ranges![0], [3, 3], [3, 4], [2, 4], [2, 5], [0, 6], [0, 7]);
+	});
 });
 
 function assertNestedRangesEqual(range: vscode.SelectionRange, ...expectedRanges: [number, number][]) {
