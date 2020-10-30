@@ -7,7 +7,7 @@
 	"workspaceMount": "source=${localWorkspaceFolder},target=/home/node/workspace/vscode,type=bind",
 	"workspaceFolder": "/home/node/workspace/vscode",
 	"overrideCommand": false,
-	"runArgs": [ "--init", "-u", "1000:1000", "--security-opt", "label=disable" ],
+	"runArgs": [ "--init", "--security-opt", "label=disable" ],
 
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash",
@@ -24,7 +24,7 @@
 	],
 
 	// Optionally loads a cached yarn install for the repo
-	"postCreateCommand": "chown -R node:node . && .devcontainer/cache/restore-diff.sh",
+	"postCreateCommand": ".devcontainer/cache/restore-diff.sh",
 
 	// "remoteUser": "node"
 }
